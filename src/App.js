@@ -1,24 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { paths } from './config/config';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AdminPanel from "./pages/AdminPanel"
+import UserFeed from './pages/UserFeed';
+import Challenges from './pages/Challenges';
+import TopBar from './components/TopBar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <TopBar/>
+      <Routes>
+        <Route exact path="/" element={<Navigate to={paths.AdminPanel.url} />} />
+        <Route exact path={paths.AdminPanel.url} element={< AdminPanel />}></Route>
+        <Route exact path={paths.UserFeed.url} element={< UserFeed />}></Route>
+        <Route exact path={paths.Challenges.url} element={< Challenges />}></Route>
+      </Routes>
+    </Router>
+    </>
   );
 }
 
