@@ -1,0 +1,16 @@
+{
+    "paths": {
+        "AdminPanel": {
+            "url": "/admin/panel",
+            "label": "Admin Panel"
+        },
+        "UserFeed": {
+            "url": "/user/feed",
+            "label": "User feed"
+        },
+        "Challenges": {
+            "url": "/challenges/view",
+            "label": "Challenges"
+        }
+    }
+}

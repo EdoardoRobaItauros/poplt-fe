@@ -1,0 +1,58 @@
+{
+    "constants": {
+        "methods": [
+            {
+                "id": "GET",
+                "label": "GET"
+            },
+            {
+                "id": "POST",
+                "label": "POST"
+            },
+            {
+                "id": "PUT",
+                "label": "PUT"
+            },
+            {
+                "id": "DELETE",
+                "label": "DELETE"
+            }
+        ],
+        "tables": [
+            {
+                "id": "users",
+                "label": "users"
+            },
+            {
+                "id": "challenges",
+                "label": "challenges"
+            },
+            {
+                "id": "contents",
+                "label": "contents"
+            }
+        ],
+        "schemas":{
+            "users":{
+                "id":"",
+                "first_name":"",
+                "last_name":"",
+                "email":"",
+                "instagram_uname":"",
+                "gender":""
+            },
+            "challenges":{
+                "id":"",
+                "name":"",
+                "tags":""
+            },
+            "contents":{
+                "id":"",
+                "user_id":"",
+                "challenge_id":"",
+                "image_url":"",
+                "likes":""
+            }
+        }
+    }
+}
