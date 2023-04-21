@@ -73,10 +73,16 @@ function AdminPanel() {
                 try {
                     if (queryParam !== null && queryParam !== undefined && queryParam !== "") {
                         result = await QueryService.getById(table.id, queryParam)
+                        if (result.data.length === 0) {
+                            setErrorCode("404: Not Found")
+                            setOpenSnackBarKo(true)
+                        } else {
+                            setQueryResult(result)
+                        }
                     } else {
                         result = await QueryService.get(table.id)
+                        setQueryResult(result)
                     }
-                    setQueryResult(result)
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
