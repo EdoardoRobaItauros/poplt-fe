@@ -8,7 +8,10 @@ const QueryService = {
         return axiosInstance.get(tableName + "/" + id)
     },
     getWithPaginationAndJoin: function (tableName, pageNum, itemsPerPage) {
-        return axiosInstance.get(`${tableName}?${pageNum}&${itemsPerPage}`)
+        return axiosInstance.get(`${tableName}?page=${pageNum}&itemsPerPage=${itemsPerPage}`)
+    },
+    getBySearch: function (tableName, queryObject) {
+        return axiosInstance.get(`${tableName}/find-by-search?${Object.entries(queryObject).map((e)=>e[0]+"="+e[1]).join("&")}`)
     },
     post: function (tableName, body) {
         const res = axiosInstance.post(tableName, body)
