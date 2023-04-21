@@ -34,7 +34,7 @@
         ],
         "schemas":{
             "users":{
-                "id":"",
+                "user_id":"",
                 "first_name":"",
                 "last_name":"",
                 "email":"",
@@ -42,7 +42,7 @@
                 "gender":""
             },
             "challenges":{
-                "id":"",
+                "challenge_id":"",
                 "name":"",
                 "tags":""
             },

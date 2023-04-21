@@ -23,6 +23,7 @@ function Challenges() {
     const [selectedChallenge, setSelectedChallenge] = React.useState(false)
     const [openSnackBarOk, setOpenSnackBarOk] = React.useState(false);
     const [openSnackBarKo, setOpenSnackBarKo] = React.useState(false);
+    const [errorCode, setErrorCode] = React.useState()
 
     React.useEffect(() => {
         fetchUser(fakeUserId)
@@ -50,6 +51,7 @@ function Challenges() {
         if (reason === 'clickaway') {
             return;
         }
+        setErrorCode()
         setOpenSnackBarKo(false);
     };
 
@@ -63,7 +65,7 @@ function Challenges() {
                 open={openModal}
                 onClose={() => { setOpenModal(false) }}
             >
-                <Modal space={6} challenges={challenges} fakeUserId={fakeUserId} setOpenSnackBarOk={setOpenSnackBarOk} setOpenSnackBarKo={setOpenSnackBarKo} setOpenModal={setOpenModal} />
+                <Modal setErrorCode={setErrorCode} space={6} challenges={challenges} fakeUserId={fakeUserId} setOpenSnackBarOk={setOpenSnackBarOk} setOpenSnackBarKo={setOpenSnackBarKo} setOpenModal={setOpenModal} />
             </Dialog>
             <Tooltip title="Add new content">
                 <Fab onClick={() => { setOpenModal(true) }} sx={{ position: "fixed", bottom: 20, right: 20, margin: 0, top: "auto", left: "auto", bgcolor: green[500], '&:hover': { bgcolor: green[600] } }} color="primary" aria-label="add">
@@ -89,7 +91,7 @@ function Challenges() {
         </Snackbar>
         <Snackbar open={openSnackBarKo} autoHideDuration={5000} onClose={handleCloseSnackBarKo}>
             <Alert onClose={handleCloseSnackBarKo} severity="error" sx={{ width: '100%' }}>
-                Something went wrong!
+                Something went wrong! {errorCode}
             </Alert>
         </Snackbar>
     </Grid>

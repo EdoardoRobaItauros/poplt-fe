@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { JSONEditor } from "react-json-editor-viewer";
+import '../App.css';
 
 function CodeEditor(props) {
 
@@ -8,6 +9,7 @@ function CodeEditor(props) {
     }
 
     return <JSONEditor
+        className="centered"
         data={props.code}
         collapsible
         onChange={changeCode}

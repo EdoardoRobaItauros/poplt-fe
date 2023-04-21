@@ -15,6 +15,7 @@ function Modal(props) {
             console.log(res)
             props.setOpenSnackBarOk(true)
         } catch (err) {
+            props.setErrorCode(err.response.status + ": " + err.response.statusText)
             props.setOpenSnackBarKo(true)
         } finally {
             setSelectedPhoto(null)

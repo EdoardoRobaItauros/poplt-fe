@@ -13,6 +13,7 @@ function AdminPanel() {
 
     const [queryParam, setQueryParam] = React.useState("")
     const [table, setTable] = React.useState("")
+    const [errorCode, setErrorCode] = React.useState()
     const [method, setMethod] = React.useState({})
     const [queryResult, setQueryResult] = React.useState()
     const [code, setCode] = React.useState()
@@ -24,13 +25,20 @@ function AdminPanel() {
         setInvalidRequest(false)
         if (method.id === "PUT") {
             setTimeout(async () => {
-                const result = await QueryService.getById(table.id, queryParam)
-                console.log(result.data)
-                if (result.data.length === 0) {
-                    setInvalidRequest(true)
+                try {
+                    const result = await QueryService.getById(table.id, queryParam)
+                    if (result.data.length === 0) {
+                        setInvalidRequest(true)
+                        setErrorCode("404: Not Found")
+                        setOpenSnackBarKo(true)
+                        setCode()
+                    } else {
+                        setCode(result.data[0])
+                    }
+                } catch (err) {
+                    setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
-                } else {
-                    setCode(result.data[0])
+                    setCode()
                 }
             }, 1000);
         }
@@ -53,6 +61,7 @@ function AdminPanel() {
         if (reason === 'clickaway') {
             return;
         }
+        setErrorCode()
         setOpenSnackBarKo(false);
     };
 
@@ -69,6 +78,7 @@ function AdminPanel() {
                     }
                     setQueryResult(result)
                 } catch (err) {
+                    setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -78,6 +88,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result)
                 } catch (err) {
+                    setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -87,6 +98,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result)
                 } catch (err) {
+                    setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -96,6 +108,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result)
                 } catch (err) {
+                    setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -117,7 +130,7 @@ function AdminPanel() {
             queryResult && method.id === "GET" && <Box className="centered" style={{ width: "90%", marginTop: "2rem" }}><CustomTable data={queryResult.data} /></Box>
         }
         {
-            code && method.id === "PUT" && <Box className="centered" style={{ width: "70%", marginTop: "2rem" }}><CodeEditor code={code} setCode={setCode} /><Button onClick={sendQuery}>Update</Button></Box>
+            code && method.id === "PUT" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Update</Button></Box>
         }
         {
             table !== "" && method.id === "POST" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Create</Button></Box>
@@ -129,7 +142,7 @@ function AdminPanel() {
         </Snackbar>
         <Snackbar open={openSnackBarKo} autoHideDuration={5000} onClose={handleCloseSnackBarKo}>
             <Alert onClose={handleCloseSnackBarKo} severity="error" sx={{ width: '100%' }}>
-                Something went wrong!
+                Something went wrong! {errorCode}
             </Alert>
         </Snackbar>
     </div>

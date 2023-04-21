@@ -42,7 +42,6 @@ function UserFeed() {
             return c
         })
         const updated = await QueryService.put("contents", contentId, contentUpdated)
-        console.log(updated)
         setContents(conts)
     }
 
@@ -50,7 +49,6 @@ function UserFeed() {
         setLoading(true)
         const result = await QueryService.getWithPaginationAndJoin("contents", pageNumber, 10)
         setLoading(false)
-        console.log(result.data)
         setContents(prevContents => {
             // console.log("prev: ", prevContents)
             return [...prevContents, ...result.data]
