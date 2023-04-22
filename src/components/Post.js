@@ -1,7 +1,7 @@
 import '../App.css';
 import * as React from 'react';
 
-import { Card, CardActions, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardActions, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
@@ -15,7 +15,7 @@ function Post(props) {
   return <Card style={{ marginLeft: "auto", marginRight: "auto", alignItems: "center" }} sx={{ maxWidth: "60%" }}>
     <CardHeader
       title={props.content.first_name + " " + props.content.last_name}
-      subheader={props.content.instagram_uname}
+      subheader={props.content.instagram_uname + " • " + props.content.name}
     />
     <CardMedia
       component="img"
