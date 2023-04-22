@@ -8,9 +8,9 @@ function GridStatistics(props) {
     const mediumRange = [11, 40]
     const highRange = [41, 1000]
 
-    return <Box sx={{ height: "100vh" }}>
+    return <Box sx={{ height: "60vh" }}>
         <Typography style={{marginBottom:"1rem"}} variant="subtitle1">Best to worst content for the challenge you picked:</Typography>
-        <Grid container>
+        <Grid container columnSpacing={12}>
             {
                 props.statistics.map((stat) => {
                     return <Grid item xs={props.space}>

@@ -2,6 +2,7 @@ import '../App.css';
 import * as React from 'react';
 import QueryService from '../services/executeQuery';
 import Post from '../components/Post';
+import { Alert, Snackbar } from '@mui/material';
 
 function UserFeed() {
 
@@ -9,6 +10,8 @@ function UserFeed() {
     const [hasMore, setHasMore] = React.useState(true)
     const [loading, setLoading] = React.useState(true)
     const [pageNumber, setPageNumber] = React.useState(0)
+    const [errorCode, setErrorCode] = React.useState()
+    const [openSnackBarKo, setOpenSnackBarKo] = React.useState(false);
 
     const observer = React.useRef()
     const lastPostRef = React.useCallback(lastPost => {
@@ -47,14 +50,28 @@ function UserFeed() {
 
     const fetchData = async () => {
         setLoading(true)
-        const result = await QueryService.getWithPaginationAndJoin("contents", pageNumber, 10)
-        setLoading(false)
-        setContents(prevContents => {
-            // console.log("prev: ", prevContents)
-            return [...prevContents, ...result.data]
-        })
-        if (result.data.length === 0) { setHasMore(false) }
+        try {
+            const result = await QueryService.getWithPaginationAndJoin("contents", pageNumber, 10)
+            setLoading(false)
+            setContents(prevContents => {
+                // console.log("prev: ", prevContents)
+                return [...prevContents, ...result.data.data]
+            })
+            if (result.data.data.length === 0) { setHasMore(false) }
+        } catch (err) {
+            setLoading(false)
+            setErrorCode(err.toString())
+            setOpenSnackBarKo(true)
+        }
     }
+
+    const handleCloseSnackBarKo = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setErrorCode()
+        setOpenSnackBarKo(false);
+    };
 
     return <div style={{ overflowY: "auto", maxHeight: "50rem" }}>
         {
@@ -65,6 +82,11 @@ function UserFeed() {
                 return <div><Post updateContent={updateContent} content={content}></Post></div>
             })
         }
+        <Snackbar open={openSnackBarKo} autoHideDuration={5000} onClose={handleCloseSnackBarKo}>
+            <Alert onClose={handleCloseSnackBarKo} severity="error" sx={{ width: '100%' }}>
+                Something went wrong! {errorCode}
+            </Alert>
+        </Snackbar>
     </div>
 }
 

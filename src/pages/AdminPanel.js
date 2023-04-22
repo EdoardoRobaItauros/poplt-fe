@@ -15,7 +15,7 @@ function AdminPanel() {
     const [table, setTable] = React.useState("")
     const [errorCode, setErrorCode] = React.useState()
     const [method, setMethod] = React.useState({})
-    const [queryResult, setQueryResult] = React.useState()
+    const [queryResult, setQueryResult] = React.useState({data:[]})
     const [code, setCode] = React.useState()
     const [openSnackBarOk, setOpenSnackBarOk] = React.useState(false);
     const [openSnackBarKo, setOpenSnackBarKo] = React.useState(false);
@@ -27,13 +27,13 @@ function AdminPanel() {
             setTimeout(async () => {
                 try {
                     const result = await QueryService.getById(table.id, queryParam)
-                    if (result.data.length === 0) {
+                    if (result.data.data.length === 0) {
                         setInvalidRequest(true)
                         setErrorCode("404: Not Found")
                         setOpenSnackBarKo(true)
                         setCode()
                     } else {
-                        setCode(result.data[0])
+                        setCode(result.data.data[0])
                     }
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
@@ -66,22 +66,22 @@ function AdminPanel() {
     };
 
     const sendQuery = async () => {
-        setQueryResult()
+        setQueryResult({data:[]})
         var result = []
         switch (method.id) {
             case "GET":
                 try {
                     if (queryParam !== null && queryParam !== undefined && queryParam !== "") {
                         result = await QueryService.getById(table.id, queryParam)
-                        if (result.data.length === 0) {
+                        if (result.data.data.length === 0) {
                             setErrorCode("404: Not Found")
                             setOpenSnackBarKo(true)
                         } else {
-                            setQueryResult(result)
+                            setQueryResult(result.data)
                         }
                     } else {
                         result = await QueryService.get(table.id)
-                        setQueryResult(result)
+                        setQueryResult(result.data)
                     }
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
@@ -92,7 +92,7 @@ function AdminPanel() {
                 try {
                     result = await QueryService.put(table.id, queryParam, code)
                     setOpenSnackBarOk(true)
-                    setQueryResult(result)
+                    setQueryResult(result.data)
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
@@ -102,7 +102,7 @@ function AdminPanel() {
                 try {
                     result = await QueryService.post(table.id, code)
                     setOpenSnackBarOk(true)
-                    setQueryResult(result)
+                    setQueryResult(result.data)
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
@@ -112,7 +112,7 @@ function AdminPanel() {
                 try {
                     result = await QueryService.delete(table.id, queryParam)
                     setOpenSnackBarOk(true)
-                    setQueryResult(result)
+                    setQueryResult(result.data)
                 } catch (err) {
                     setErrorCode(err.response.status + ": " + err.response.statusText)
                     setOpenSnackBarKo(true)
@@ -133,7 +133,7 @@ function AdminPanel() {
         </Typography>
         <QueryBar invalidRequest={invalidRequest} setQueryParam={setQueryParam} setTable={setTable} table={table} queryParam={queryParam} sendQuery={sendQuery} method={method} setMethod={setMethod} />
         {
-            queryResult && method.id === "GET" && <Box className="centered" style={{ width: "90%", marginTop: "2rem" }}><CustomTable data={queryResult.data} /></Box>
+            queryResult.data.length>0 && method.id === "GET" && <Box className="centered" style={{ width: "90%", marginTop: "2rem" }}><CustomTable data={queryResult.data} /></Box>
         }
         {
             code && method.id === "PUT" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Update</Button></Box>

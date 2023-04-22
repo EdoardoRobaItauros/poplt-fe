@@ -31,13 +31,23 @@ function Challenges() {
     }, [])
 
     const fetchUser = async (fakeUserId) => {
-        const result = await QueryService.getById("users", fakeUserId)
-        setUser(result.data[0])
+        try {
+            const result = await QueryService.getById("users", fakeUserId)
+            setUser(result.data.data[0])
+        } catch (err) {
+            setErrorCode(err.toString())
+            setOpenSnackBarKo(true)
+        }
     }
 
     const fetchChallenges = async () => {
-        const result = await QueryService.get("challenges")
-        setChallenges(result.data)
+        try {
+            const result = await QueryService.get("challenges")
+            setChallenges(result.data.data)
+        } catch (err) {
+            setErrorCode(err.toString())
+            setOpenSnackBarKo(true)
+        }
     }
 
     const handleCloseSnackBarOk = (event, reason) => {
@@ -56,10 +66,10 @@ function Challenges() {
     };
 
     return <Grid style={{ height: "100vh" }} container>
-        <Grid item xs={3} sx={{ borderRight: 1 }}>
+        <Grid style={{ height: "100vh" }} item xs={3} sx={{ borderRight: 1 }}>
             <ProfileCard user={user} />
         </Grid>
-        <Grid item xs={9}>
+        <Grid style={{ height: "100vh" }} item xs={9}>
             <Statistics selectedChallenge={selectedChallenge} setSelectedChallenge={setSelectedChallenge} challenges={challenges} fakeUserId={fakeUserId} />
             <Dialog
                 open={openModal}

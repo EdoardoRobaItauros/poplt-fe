@@ -5,7 +5,7 @@ import GridStatistics from './GridStatistics';
 
 function ModalGlobalStats(props) {
 
-    const [globalStatistics, setGlobalStatistics] = React.useState([])
+    const [globalStatistics, setGlobalStatistics] = React.useState({ data: [] })
 
     React.useEffect(() => {
         fetchStats()
@@ -17,7 +17,7 @@ function ModalGlobalStats(props) {
     }
 
     return <div style={{ height: "80vh" }}>
-        <GridStatistics space={props.space} statistics={globalStatistics} />
+        <GridStatistics space={props.space} statistics={globalStatistics.data} />
     </div>
 }
 

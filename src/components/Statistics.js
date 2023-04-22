@@ -14,7 +14,7 @@ function Statistics(props) {
     const fetchStatistics = async (challenge) => {
         try {
             var stats = await QueryService.getBySearch("contents", { user_id: props.fakeUserId, challenge_id: challenge.challenge_id, orderedBy: "likes" })
-            setPersonalStatistics(stats.data)
+            setPersonalStatistics(stats.data.data)
         } catch (err) {
             setErrorCode("404: Not Found")
             setOpenSnackBarKo(true)
@@ -32,7 +32,7 @@ function Statistics(props) {
 
     return <>
         <Typography style={{ marginTop: "1rem", marginLeft: "1rem" }} variant="h4">Statistics</Typography>
-        <Box className="centered" sx={{ height: "100vh", width: "80vh", marginTop: "3rem" }}>
+        <Box className="centered" sx={{ height: "85vh", width: "80vh", marginTop: "3rem" }}>
             <Autocomplete
                 id="combo-box-demo"
                 style={{ marginBottom: "2rem" }}
