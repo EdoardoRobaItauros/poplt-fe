@@ -15,7 +15,7 @@ function AdminPanel() {
     const [table, setTable] = React.useState("")
     const [errorCode, setErrorCode] = React.useState()
     const [method, setMethod] = React.useState({})
-    const [queryResult, setQueryResult] = React.useState({data:[]})
+    const [queryResult, setQueryResult] = React.useState({ data: [] })
     const [code, setCode] = React.useState()
     const [openSnackBarOk, setOpenSnackBarOk] = React.useState(false);
     const [openSnackBarKo, setOpenSnackBarKo] = React.useState(false);
@@ -36,7 +36,7 @@ function AdminPanel() {
                         setCode(result.data.data[0])
                     }
                 } catch (err) {
-                    setErrorCode(err.response.status + ": " + err.response.statusText)
+                    setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
                     setOpenSnackBarKo(true)
                     setCode()
                 }
@@ -45,6 +45,8 @@ function AdminPanel() {
     }, [queryParam])
 
     React.useEffect(() => {
+        setQueryResult({ data: [] })
+        setQueryParam("")
         if (method.id === "POST" && table.id !== "") {
             setCode(constants.schemas[table.id])
         }
@@ -66,7 +68,7 @@ function AdminPanel() {
     };
 
     const sendQuery = async () => {
-        setQueryResult({data:[]})
+        setQueryResult({ data: [] })
         var result = []
         switch (method.id) {
             case "GET":
@@ -84,7 +86,7 @@ function AdminPanel() {
                         setQueryResult(result.data)
                     }
                 } catch (err) {
-                    setErrorCode(err.response.status + ": " + err.response.statusText)
+                    setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -94,7 +96,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result.data)
                 } catch (err) {
-                    setErrorCode(err.response.status + ": " + err.response.statusText)
+                    setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -104,7 +106,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result.data)
                 } catch (err) {
-                    setErrorCode(err.response.status + ": " + err.response.statusText)
+                    setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -114,7 +116,7 @@ function AdminPanel() {
                     setOpenSnackBarOk(true)
                     setQueryResult(result.data)
                 } catch (err) {
-                    setErrorCode(err.response.status + ": " + err.response.statusText)
+                    setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
                     setOpenSnackBarKo(true)
                 }
                 break
@@ -133,7 +135,7 @@ function AdminPanel() {
         </Typography>
         <QueryBar invalidRequest={invalidRequest} setQueryParam={setQueryParam} setTable={setTable} table={table} queryParam={queryParam} sendQuery={sendQuery} method={method} setMethod={setMethod} />
         {
-            queryResult.data.length>0 && method.id === "GET" && <Box className="centered" style={{ width: "90%", marginTop: "2rem" }}><CustomTable data={queryResult.data} /></Box>
+            queryResult.data.length > 0 && method.id === "GET" && <Box className="centered" style={{ width: "90%", marginTop: "2rem" }}><CustomTable data={queryResult.data} /></Box>
         }
         {
             code && method.id === "PUT" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Update</Button></Box>

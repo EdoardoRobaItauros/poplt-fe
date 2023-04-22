@@ -15,14 +15,14 @@ function Modal(props) {
             console.log(res)
             props.setOpenSnackBarOk(true)
         } catch (err) {
-            props.setErrorCode(err.response.status + ": " + err.response.statusText)
+            props.setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)
             props.setOpenSnackBarKo(true)
         } finally {
             setSelectedPhoto(null)
             setSelectedChallenge(null)
         }
     }
-    
+
     return <div style={{ height: "30vh", width: "35vw" }}>
         <DialogTitle id="alert-dialog-title">
             Upload your image!
