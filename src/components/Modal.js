@@ -12,7 +12,8 @@ function Modal(props) {
     const uploadImage = async () => {
         try {
             const res = await QueryService.post("contents", { id: uuidv4(), user_id: props.fakeUserId, challenge_id: selectedChallenge.challenge_id, image_url: selectedPhoto, likes: 0, isliked: false })
-            console.log(res)
+            // console.log(res)
+            props.fetchStatistics(selectedChallenge)
             props.setOpenSnackBarOk(true)
         } catch (err) {
             props.setErrorCode(err.response.data.statusCode + ": " + err.response.data.errorMessage)

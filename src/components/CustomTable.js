@@ -16,7 +16,7 @@ function CustomTable(props) {
         setPage(0)
     }, [props])
 
-    const rowsPerPage = 8
+    const rowsPerPage = 10
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);

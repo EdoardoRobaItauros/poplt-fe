@@ -24,6 +24,7 @@ function Challenges() {
     const [openSnackBarOk, setOpenSnackBarOk] = React.useState(false);
     const [openSnackBarKo, setOpenSnackBarKo] = React.useState(false);
     const [errorCode, setErrorCode] = React.useState()
+    const [personalStatistics, setPersonalStatistics] = React.useState(null)
 
     React.useEffect(() => {
         fetchUser(fakeUserId)
@@ -65,17 +66,28 @@ function Challenges() {
         setOpenSnackBarKo(false);
     };
 
+    const fetchStatistics = async (challenge) => {
+        try {
+            var stats = await QueryService.getBySearch("contents", { user_id: fakeUserId, challenge_id: challenge.challenge_id, orderedBy: "likes" })
+            setPersonalStatistics(stats.data.data)
+        } catch (err) {
+            setErrorCode("404: Not Found")
+            setOpenSnackBarKo(true)
+            console.error(err)
+        }
+    }
+
     return <Grid style={{ height: "100vh" }} container>
         <Grid style={{ height: "100vh" }} item xs={3} sx={{ borderRight: 1 }}>
             <ProfileCard user={user} />
         </Grid>
         <Grid style={{ height: "100vh" }} item xs={9}>
-            <Statistics selectedChallenge={selectedChallenge} setSelectedChallenge={setSelectedChallenge} challenges={challenges} fakeUserId={fakeUserId} />
+            <Statistics personalStatistics={personalStatistics} setPersonalStatistics={setPersonalStatistics} fetchStatistics={fetchStatistics} selectedChallenge={selectedChallenge} setSelectedChallenge={setSelectedChallenge} challenges={challenges} />
             <Dialog
                 open={openModal}
                 onClose={() => { setOpenModal(false) }}
             >
-                <Modal setErrorCode={setErrorCode} space={6} challenges={challenges} fakeUserId={fakeUserId} setOpenSnackBarOk={setOpenSnackBarOk} setOpenSnackBarKo={setOpenSnackBarKo} setOpenModal={setOpenModal} />
+                <Modal fetchStatistics={fetchStatistics} setErrorCode={setErrorCode} space={6} challenges={challenges} fakeUserId={fakeUserId} setOpenSnackBarOk={setOpenSnackBarOk} setOpenSnackBarKo={setOpenSnackBarKo} setOpenModal={setOpenModal} />
             </Dialog>
             <Tooltip title="Add new content">
                 <Fab onClick={() => { setOpenModal(true) }} sx={{ position: "fixed", bottom: 20, right: 20, margin: 0, top: "auto", left: "auto", bgcolor: green[500], '&:hover': { bgcolor: green[600] } }} color="primary" aria-label="add">

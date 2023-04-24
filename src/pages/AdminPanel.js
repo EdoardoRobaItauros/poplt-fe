@@ -23,7 +23,7 @@ function AdminPanel() {
 
     React.useEffect(() => {
         setInvalidRequest(false)
-        if (method.id === "PUT") {
+        if (method.id === "PUT" && queryParam !== "") {
             setTimeout(async () => {
                 try {
                     const result = await QueryService.getById(table.id, queryParam)
@@ -47,6 +47,7 @@ function AdminPanel() {
     React.useEffect(() => {
         setQueryResult({ data: [] })
         setQueryParam("")
+        setCode("")
         if (method.id === "POST" && table.id !== "") {
             setCode(constants.schemas[table.id])
         }
@@ -141,7 +142,7 @@ function AdminPanel() {
             code && method.id === "PUT" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Update</Button></Box>
         }
         {
-            table !== "" && method.id === "POST" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Create</Button></Box>
+            code && method.id === "POST" && <Box className="centered" style={{ width: "20%", marginTop: "2rem" }}><CodeEditor className="centered" code={code} setCode={setCode} /><Button onClick={sendQuery}>Create</Button></Box>
         }
         <Snackbar open={openSnackBarOk} autoHideDuration={5000} onClose={handleCloseSnackBarOk}>
             <Alert onClose={handleCloseSnackBarOk} severity="success" sx={{ width: '100%' }}>

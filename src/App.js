@@ -16,6 +16,7 @@ function App() {
         <Route exact path={paths.AdminPanel.url} element={< AdminPanel />}></Route>
         <Route exact path={paths.UserFeed.url} element={< UserFeed />}></Route>
         <Route exact path={paths.Challenges.url} element={< Challenges />}></Route>
+        <Route path="*" element={<Navigate to={paths.AdminPanel.url} />} />
       </Routes>
     </Router>
     </>
